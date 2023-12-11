@@ -1,5 +1,6 @@
 import requests
 import re
+import os
 
 # + Взять словарь всех 5 буквенных слов
 # Указать исключающие буквы
@@ -40,7 +41,13 @@ def search_word(negative_let, positive_let):
 
     
     i = 0
-    with open ('.\\lib.txt', "r") as dictt:
+
+    if os.getcwd().split('\\')[-1] == 'Tinkoff_word_game':
+        path = '.\\lib.txt'
+    else:
+        path = '.\\Tinkoff_word_game\\lib.txt'
+
+    with open (path, "r") as dictt:
         for word in dictt.readlines():
             negative_list.append(word.strip('\n'))
 
@@ -78,7 +85,11 @@ def search_word(negative_let, positive_let):
     # Возвращает список слов в которых есть все известные буквы
     final = [key for key,value in dict_res.items() if value == len(positive_let_list)]
 
-    return final
+    if len(final) > 0:
+        return final
+    else:
+        final = 'не существуют'
+        return final
 
 
 def check_position(maska, word_list):
@@ -99,10 +110,10 @@ def check_position(maska, word_list):
                 except ValueError:
                     break
     
-
-
-    print ('Варианты:', set(check))
-
+    if len(check) > 0:
+        print ('Варианты:', set(check))
+    else:
+        print ('Вариантов нет')
 
 def main_menu():
     print ('Режимы:\n0 - Обновить\n1 - Проверка слов без маски\n2 - Проверка с маской, вида: "*****". На месте * известные буквы\nexit - чтобы выйти')
